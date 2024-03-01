@@ -7,7 +7,6 @@ import {
   provideHttpClient,
 } from '@angular/common/http';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { provideStore } from '@ngrx/store';
 import { provideToastr } from 'ngx-toastr';
 import { routes } from './app.routes';
 import { ErrorInterceptor } from './core/interceptor/interceptorError';
@@ -24,6 +23,5 @@ export const appConfig: ApplicationConfig = {
       useClass: ErrorInterceptor,
       multi: true,
     },
-    provideStore(),
   ],
 };
