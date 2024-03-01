@@ -10,12 +10,13 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 @import 'material-icons/iconfont/material-icons.css';
 @import 'ngx-toastr/toastr';
 
+
 .spacer {
     flex: 1 1 auto;
-  }
+}
   
   // fix tailwind and angular material compatibility bug
-  .mdc-notched-outline__notch {
-    border-right: none;
-  }
+.mdc-notched-outline__notch {
+  border-right: none;
+}
   

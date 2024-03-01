@@ -1,0 +1,28 @@
+<app-tab
+  titleTabOne="Pautas em aberto"
+  titleTabTwo="Pautas em andamento"
+  titleTabThree="Pautas fechadas"
+  class="w-full max-w-5xl min-w-[300px] rounded-2xl shadow-2xl shadow-slate-500"
+  (tabChanged)="onTabChanged($event)"
+>
+  <section componentTabOne>
+    <app-list-table
+      [data]="displayAgendaFalse | async"
+      [isFirstTab]="true"
+      class="max-w-[315px]"
+      (deleteClickEmitter)="onDeleteClick($event)"
+    ></app-list-table>
+  </section>
+  <section componentTabTwo>
+    <app-list-table
+      [data]="displayAgendaTrue | async"
+      class="max-w-[315px]"
+    ></app-list-table>
+  </section>
+  <section componentTabThree>
+    <app-list-table
+      [data]="displayAgendaClose | async"
+      class="max-w-[315px]"
+    ></app-list-table>
+  </section>
+</app-tab>

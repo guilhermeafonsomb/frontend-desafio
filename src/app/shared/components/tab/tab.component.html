@@ -1,0 +1,13 @@
+<section>
+  <mat-tab-group (selectedTabChange)="onTabSelect($event)">
+    <mat-tab label="{{ titleTabOne }}">
+      <ng-content select="[componentTabOne]"></ng-content>
+    </mat-tab>
+    <mat-tab label="{{ titleTabTwo }}">
+      <ng-content select="[componentTabTwo]"></ng-content>
+    </mat-tab>
+    <mat-tab label="{{ titleTabThree }}">
+      <ng-content select="[componentTabThree]"></ng-content>
+    </mat-tab>
+  </mat-tab-group>
+</section>

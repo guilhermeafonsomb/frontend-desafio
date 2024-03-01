@@ -3,7 +3,14 @@ module.exports = {
   important: true,
   content: ["./src/**/*.{html,ts}"],
   theme: {
-    extend: {},
+    extend: {
+      backgroundColor: ["disabled"],
+      textColor: ["disabled"],
+      colors: {
+        primary: "#ed0973",
+        secondary: "#221f52",
+      },
+    },
   },
   plugins: [],
 };

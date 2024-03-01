@@ -1,0 +1,20 @@
+<h1 mat-dialog-title>{{ data.title }}</h1>
+
+<div mat-dialog-content *ngIf="data.content" class="mb-4">
+  <p>{{ data.content }}</p>
+</div>
+<div mat-dialog-actions class="flex justify-center basis-0 gap-4 flex-1">
+  @if (data.cancelText) {
+
+  <button mat-dialog-close class="text-secondary bg-white font-medium">
+    {{ data.cancelText }}
+  </button>
+  }
+  <button
+    class="bg-primary font-bold text-white"
+    mat-raised-button
+    [mat-dialog-close]="true"
+  >
+    {{ data.confirmText }}
+  </button>
+</div>

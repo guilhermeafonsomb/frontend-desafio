@@ -1,0 +1,11 @@
+<section class="h-12 border-b-2 flex justify-end items-center pr-4">
+  <button mat-button [matMenuTriggerFor]="menu">
+    Gerenciamento de usuários
+    <mat-icon>swap_vertical_circle</mat-icon>
+  </button>
+  <mat-menu #menu="matMenu">
+    @for (item of users$ | async; track item.id) {
+    <button mat-menu-item>{{ item.name }}</button>
+    }
+  </mat-menu>
+</section>

@@ -1,0 +1,80 @@
+<section class="p-4">
+  @if (data?.length !== 0) {
+  <table *ngIf="data" class="bg-transparent" mat-table [dataSource]="data">
+    <ng-container matColumnDef="position">
+      <th class="border-zinc-400" mat-header-cell *matHeaderCellDef>No.</th>
+      <td
+        class="w-24 border border-zinc-400"
+        mat-cell
+        *matCellDef="let element; let i = index"
+      >
+        {{ i + 1 }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="title">
+      <th class="border-zinc-400" mat-header-cell *matHeaderCellDef>Titulo</th>
+      <td
+        (click)="openUpdateModal(element.id)"
+        class="border-zinc-400"
+        mat-cell
+        *matCellDef="let element"
+      >
+        {{ element.title }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="action">
+      <th class="border-zinc-400" mat-header-cell *matHeaderCellDef></th>
+      <td
+        class="border-zinc-400 border-e w-3"
+        mat-cell
+        *matCellDef="let element"
+      >
+        @if (isFirstTab) {
+        <div class="flex justify-end">
+          <button mat-button [matMenuTriggerFor]="menu">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu">
+            <button class="text-primary" mat-menu-item>Iniciar sessão</button>
+            <button
+              (click)="openDeleteModal(element.id)"
+              class="text-secondary"
+              mat-menu-item
+            >
+              Deletar
+            </button>
+          </mat-menu>
+        </div>
+        }
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr
+      class="cursor-pointer hover:bg-gray-100"
+      mat-row
+      *matRowDef="let row; columns: displayedColumns"
+    ></tr>
+  </table>
+
+  <mat-paginator
+    [pageSizeOptions]="[10, 15, 20]"
+    showFirstLastButtons
+    [length]="data?.length"
+    aria-label="Select page of periodic elements"
+    class="bg-transparent border border-zinc-400 py-2"
+  >
+  </mat-paginator>
+  } @else {
+  <section class="flex flex-col items-center gap-2 py-4">
+    <mat-icon inline="true" class="text-9xl opacity-50"
+      >content_paste_off</mat-icon
+    >
+    <h1 class="font-bold text-secondary text-4xl w-full text-center">
+      Não possui pautas.
+    </h1>
+  </section>
+  }
+</section>
