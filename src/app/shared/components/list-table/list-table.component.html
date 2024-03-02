@@ -1,6 +1,6 @@
 <section class="p-4">
-  @if (data?.length !== 0) {
-  <table *ngIf="data" class="bg-transparent" mat-table [dataSource]="data">
+  @if (dataSource?.length !== 0) {
+  <table class="bg-transparent" mat-table [dataSource]="dataSource">
     <ng-container matColumnDef="position">
       <th class="border-zinc-400" mat-header-cell *matHeaderCellDef>No.</th>
       <td
@@ -16,18 +16,18 @@
       <th class="border-zinc-400" mat-header-cell *matHeaderCellDef>Titulo</th>
       <td
         (click)="openUpdateModal(element.id)"
-        class="border-zinc-400"
+        class="border-zinc-400 max-w-24"
         mat-cell
         *matCellDef="let element"
       >
-        {{ element.title }}
+        <p class="truncate">{{ element.title }}</p>
       </td>
     </ng-container>
 
     <ng-container matColumnDef="action">
       <th class="border-zinc-400" mat-header-cell *matHeaderCellDef></th>
       <td
-        class="border-zinc-400 border-e w-3"
+        class="border-zinc-400 border-e w-40 pr-0"
         mat-cell
         *matCellDef="let element"
       >
@@ -37,9 +37,15 @@
             <mat-icon>more_vert</mat-icon>
           </button>
           <mat-menu #menu="matMenu">
-            <button class="text-primary" mat-menu-item>Iniciar sessão</button>
             <button
-              (click)="openDeleteModal(element.id)"
+              (click)="toggleModalAction(element.id, 'start')"
+              class="text-primary"
+              mat-menu-item
+            >
+              Iniciar sessão
+            </button>
+            <button
+              (click)="toggleModalAction(element.id)"
               class="text-secondary"
               mat-menu-item
             >
@@ -47,6 +53,17 @@
             </button>
           </mat-menu>
         </div>
+        } @if (element.open) {
+        <div class="flex items-center">
+          <!-- <mat-progress-bar
+            class="max-w-28 min-w-10 w-full"
+            mode="determinate"
+            [value]="element.duration"
+          ></mat-progress-bar> -->
+
+          tempo de duração da pauta
+        </div>
+
         }
       </td>
     </ng-container>
@@ -62,7 +79,7 @@
   <mat-paginator
     [pageSizeOptions]="[10, 15, 20]"
     showFirstLastButtons
-    [length]="data?.length"
+    [length]="dataSource?.length"
     aria-label="Select page of periodic elements"
     class="bg-transparent border border-zinc-400 py-2"
   >

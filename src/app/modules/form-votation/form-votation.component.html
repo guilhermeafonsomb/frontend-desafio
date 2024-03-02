@@ -1,0 +1,62 @@
+<h2 mat-dialog-title>Faça sua votação</h2>
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <mat-dialog-content>
+    <section class="flex flex-col px-6">
+      @if (!user.id) {
+      <p class="text-red-400">
+        Antes de votar selecione um usuário no gerencimaento de usuários.
+      </p>
+      }
+      <h2 class="mb-4 font-bold text-lg">{{ data.title }}.</h2>
+
+      <section class="flex flex-col gap-1">
+        <P>Você deseja aprovar essa pauta?</P>
+        <mat-hint class="mb-1">Digite somente números.</mat-hint>
+        <mat-form-field class="w-full max-w-80 mb-1 mt-2" appearance="outline">
+          <mat-label>Antes de votar insira um CPF válido:</mat-label>
+          <input
+            matInput
+            placeholder="00000000000"
+            formControlName="cpf"
+            maxlength="11"
+          />
+          @if (form.get('cpf')?.invalid && form.get('cpf')?.touched) {
+          <mat-error>
+            {{ getErrorMessage("cpf") }}
+          </mat-error>
+          }
+        </mat-form-field>
+        <mat-radio-group formControlName="votation">
+          <mat-radio-button value="SIM">Sim</mat-radio-button>
+          <mat-radio-button value="NAO">Não</mat-radio-button>
+        </mat-radio-group>
+
+        <section>
+          <p>
+            Votos a favor
+            <span class="font-bold text-green-500">{{ data?.yesVotes }}</span
+            >.
+          </p>
+          <p>
+            Votos contra
+            <span class="font-bold text-red-500">{{ data?.noVotes }}</span
+            >.
+          </p>
+        </section>
+      </section>
+    </section>
+  </mat-dialog-content>
+  <mat-dialog-actions class="flex justify-end gap-2">
+    <button class="py-2 px-8" mat-button mat-dialog-close>Cancelar</button>
+    <button
+      class="bg-primary text-white rounded-md font-bold py-2 px-8 disabled:opacity-50 hover:brightness-95 transition-all duration-300 ease-in-out"
+      mat-button
+      mat-dialog-close
+      cdkFocusInitial
+      type="submit"
+      [disabled]="!form.valid || !user.id"
+    >
+      Salvar
+    </button>
+  </mat-dialog-actions>
+</form>
