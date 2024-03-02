@@ -12,4 +12,5 @@ export interface Agenda {
   open: boolean;
   yesVotes: number;
   noVotes: number;
+  startTime: string;
 }

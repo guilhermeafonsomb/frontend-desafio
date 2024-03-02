@@ -39,6 +39,8 @@ import { ActionDialogData } from '../action-dialog/action-dialog.type';
 export class ListTableComponent {
   displayedColumns: string[] = ['position', 'title', 'action'];
   test = 100;
+  passedTime = 0;
+  initialDuration = 0;
 
   constructor(
     public dialog: MatDialog,
@@ -50,7 +52,7 @@ export class ListTableComponent {
   @Input() set agendas(agendas: Agenda[] | null) {
     if (agendas) {
       this.dataSource = agendas;
-      // this.handleProgressBar();
+      this.handleProgressBar();
     }
   }
 
@@ -112,13 +114,22 @@ export class ListTableComponent {
   handleProgressBar() {
     this.dataSource.forEach((agenda) => {
       if (agenda.open) {
-        const initialDuration = agenda.duration;
-        const percentage = (1000 / initialDuration) * 100;
-        agenda.duration = 100;
+        const passedTime =
+          new Date().getTime() - new Date(agenda.startTime).getTime();
+
+        const restDuration = agenda.duration - passedTime;
+
+        const percentage = (1000 / agenda.duration) * 100;
+
+        agenda.duration = (restDuration / agenda.duration) * 100;
+
         const interval = setInterval(() => {
           if (agenda.duration > 0) {
             agenda.duration -= percentage;
           } else {
+            this.dataSource = this.dataSource.filter(
+              (item) => item.id !== agenda.id
+            );
             clearInterval(interval);
           }
         }, 1000);
