@@ -5,7 +5,7 @@
   </button>
   <mat-menu #menu="matMenu">
     @for (item of users$ | async; track item.id) {
-    <button mat-menu-item>{{ item.name }}</button>
+    <button (click)="handleUser(item)" mat-menu-item>{{ item.name }}</button>
     }
   </mat-menu>
 </section>
