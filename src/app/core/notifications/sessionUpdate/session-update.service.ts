@@ -11,7 +11,7 @@ export class SessionUpdateService {
 
   constructor() {}
 
-  notifyUpdate(type: 'create' | 'update' | 'delete') {
+  notifyUpdate(type: 'create' | 'update' | 'delete' | 'patch') {
     this.updateNotifier.next(type);
   }
 }

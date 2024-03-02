@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { Observable, of, take } from 'rxjs';
 import { SessionUpdateService } from '../../core/notifications/sessionUpdate/session-update.service';
 import { AgendasService } from '../../core/services/agendas/agendas.service';
+import { VoteService } from '../../core/services/vote/vote.service';
 import { ListTableComponent } from '../../shared/components/list-table/list-table.component';
 import { TabComponent } from '../../shared/components/tab/tab.component';
 import { Agenda } from '../../shared/models/agendas.interface';
@@ -20,7 +21,8 @@ export class SessionsComponent {
 
   constructor(
     private agendasService: AgendasService,
-    private sessionUpdateService: SessionUpdateService
+    private sessionUpdateService: SessionUpdateService,
+    private voteService: VoteService
   ) {
     this.onTabChanged(0);
 
@@ -35,6 +37,10 @@ export class SessionsComponent {
 
   onDeleteClick(id: number) {
     this.agendasService.deleteAgenda(id).pipe(take(1)).subscribe();
+  }
+
+  onStartSessionClick(id: number) {
+    this.voteService.openVotingSession(id).pipe(take(1)).subscribe();
   }
 
   onTabChanged(index: number) {

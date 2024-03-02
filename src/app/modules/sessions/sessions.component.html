@@ -7,21 +7,22 @@
 >
   <section componentTabOne>
     <app-list-table
-      [data]="displayAgendaFalse | async"
+      [agendas]="displayAgendaFalse | async"
       [isFirstTab]="true"
       class="max-w-[315px]"
       (deleteClickEmitter)="onDeleteClick($event)"
+      (startSessionClickEmitter)="onStartSessionClick($event)"
     ></app-list-table>
   </section>
   <section componentTabTwo>
     <app-list-table
-      [data]="displayAgendaTrue | async"
+      [agendas]="displayAgendaTrue | async"
       class="max-w-[315px]"
     ></app-list-table>
   </section>
   <section componentTabThree>
     <app-list-table
-      [data]="displayAgendaClose | async"
+      [agendas]="displayAgendaClose | async"
       class="max-w-[315px]"
     ></app-list-table>
   </section>

@@ -38,7 +38,11 @@ import { Agenda, AgendaDTO } from '../../shared/models/agendas.interface';
 export class FormSessionComponent {
   form: FormGroup = new FormGroup({
     title: new FormControl('', [Validators.required, Validators.maxLength(50)]),
-    duration: new FormControl('', [Validators.required, Validators.max(3)]),
+    duration: new FormControl('', [
+      Validators.required,
+      Validators.max(3),
+      Validators.min(1),
+    ]),
   });
 
   constructor(
@@ -46,7 +50,6 @@ export class FormSessionComponent {
     private agendasService: AgendasService
   ) {
     if (this.data.data) {
-      console.log(this.data.data);
       this.form.get('title')?.setValue(this.data.data.title);
       this.form
         .get('duration')
