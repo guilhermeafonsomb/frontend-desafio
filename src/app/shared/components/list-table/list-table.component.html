@@ -64,6 +64,15 @@
           tempo de duração da pauta
         </div>
 
+        } @if (element.open === false) {
+        <div class="flex items-center">
+          @if (element.approved) {
+          <p class="text-green-500">Aprovada</p>
+          } @else {
+          <p class="text-red-500">Reprovada</p>
+          }
+        </div>
+
         }
       </td>
     </ng-container>

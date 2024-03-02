@@ -129,7 +129,7 @@ export class ListTableComponent {
   openUpdateModal(id: number) {
     const title = 'Editar sessão';
     this.agendasService.getAgendaById(id).subscribe((data) => {
-      if (!data.open) {
+      if (data.open === null) {
         this.dialog.open(FormSessionComponent, {
           width: '600px',
           data: { title, data },
@@ -137,12 +137,28 @@ export class ListTableComponent {
         return;
       }
 
-      this.dialog.open(FormVotationComponent, {
-        width: '600px',
-        data: data,
-      });
+      if (data.open) {
+        this.dialog.open(FormVotationComponent, {
+          width: '600px',
+          data: data,
+        });
+        return;
+      }
 
-      console.log('chama');
+      if (data.open === false) {
+        this.dialog.open(ActionDialogComponent, {
+          data: {
+            title: 'Detalhes da pauta',
+            content: `A pauta teve ${data.yesVotes} votos a favor e ${
+              data.noVotes
+            } votos contra. E ela foi ${
+              data.approved ? 'aprovada' : 'reprovada'
+            }.`,
+            confirmText: 'Fechar',
+          },
+        });
+        return;
+      }
     });
   }
 }

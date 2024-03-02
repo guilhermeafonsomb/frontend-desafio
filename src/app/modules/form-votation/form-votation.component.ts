@@ -44,9 +44,7 @@ export class FormVotationComponent {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: Agenda,
     private voteService: VoteService
-  ) {
-    console.log(this.user);
-  }
+  ) {}
 
   form: FormGroup = new FormGroup({
     cpf: new FormControl('', [
