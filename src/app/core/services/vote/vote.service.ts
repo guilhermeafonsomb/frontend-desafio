@@ -36,6 +36,11 @@ export class VoteService {
   }
 
   addVote(payload: AddVoteDTO) {
-    return this.http.post(`${this.url}`, payload);
+    return this.http.post(`${this.url}`, payload).pipe(
+      tap(() => {
+        this.notificationService.showSuccess('Voto realizado com sucesso.');
+        this.sessionUpdateService.notifyUpdate('create');
+      })
+    );
   }
 }
