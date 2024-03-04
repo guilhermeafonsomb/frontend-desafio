@@ -172,9 +172,10 @@ export class ListTableComponent {
           if (agenda.duration > 0) {
             agenda.duration -= percentage;
           } else {
-            this.dataSourceAgendas = this.dataSourceAgendas.filter(
+            this.dataSource = this.dataSourceAgendas.filter(
               (item) => item.id !== agenda.id
             );
+
             clearInterval(interval);
           }
         }, 1000);
@@ -183,7 +184,6 @@ export class ListTableComponent {
   }
 
   openUpdateModal(id: string, modalType: number = 0) {
-    console.log('modalType', modalType);
     const title = modalType === 0 ? 'Editar sessão' : 'Editar categoria';
 
     this.agendasService.getAgendaById(id).subscribe((data) => {

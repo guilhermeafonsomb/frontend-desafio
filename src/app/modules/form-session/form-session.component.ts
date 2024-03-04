@@ -45,11 +45,7 @@ export class FormSessionComponent {
   form: FormGroup = new FormGroup({
     title: new FormControl('', [Validators.required, Validators.maxLength(50)]),
     category: new FormControl('', [Validators.required]),
-    duration: new FormControl('', [
-      Validators.required,
-      Validators.max(3),
-      Validators.min(1),
-    ]),
+    duration: new FormControl('', [Validators.max(3), Validators.min(1)]),
   });
 
   categories: Category[] = [];
