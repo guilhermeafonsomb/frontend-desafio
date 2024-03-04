@@ -2,26 +2,41 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.2.1.
 
-## Development server
+## Para instalar as Dependências
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+```bash
+$ npm install
+```
 
-## Code scaffolding
+## Para rodar o projeto
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+```bash
+$ npm run start
+```
 
-## Build
+A porta  `http://localhost:4200/` por padrão.
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+## Para rodar os testes
 
-## Running unit tests
+```bash
+$ npm run test
+```
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+## Tecnologias usadas
 
-## Running end-to-end tests
+- Angular 17
+- TypeScript
+- Jest
+- Angular Material
+- Tailwind
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
 
-## Further help
+## Explicações
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+Optei pelo Angular 17 para meu projeto após um período sem usar Angular, buscando atualizar-me com as inovações da plataforma. Esta versão traz melhorias significativas em performance e segurança, além de introduzir recursos avançados como componentes autônomos, otimizando o desenvolvimento e a manutenibilidade das aplicações. Foi uma escolha visando explorar as novas funcionalidades e aprimorar minha familiaridade com as práticas atuais do Angular.
+
+
+Escolhi o Jest sobre o Jasmine para testes devido à minha experiência prévia com o Jest, sua rapidez e simplicidade. O Jest facilita a configuração de mocks e executa testes mais rapidamente, o que melhora a eficiência do desenvolvimento e teste das aplicações.
+
+Priorizei por combinar Angular Material com TailwindCSS no projeto para aproveitar as vantagens de ambos. Angular Material oferece componentes de UI ricos e bem testados, garantindo consistência e usabilidade seguindo as diretrizes do Material Design. Já o TailwindCSS permite uma personalização rápida e responsiva do layout com sua abordagem utilitária, facilitando ajustes de design sem escrever CSS personalizado do zero. Essa combinação maximiza a eficiência do desenvolvimento, permitindo criar interfaces atraentes e funcionais rapidamente, enquanto mantém a flexibilidade para customizações detalhadas e responsividade.
+
