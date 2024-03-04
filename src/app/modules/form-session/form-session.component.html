@@ -9,17 +9,29 @@
       }
       <mat-hint class="mb-4">Uma pauta dura no máximo 3 minutos.</mat-hint>
       <section class="flex flex-col gap-1">
+        <mat-form-field class="mb-1" appearance="outline">
+          <mat-label>Nome da pauta</mat-label>
+          <input matInput placeholder="Nome da pauta" formControlName="title" />
+          @if (form.get('title')?.invalid && form.get('title')?.touched) {
+          <mat-error>
+            {{ getErrorMessage("title") }}
+          </mat-error>
+          }
+        </mat-form-field>
+
         <div class="flex gap-4">
           <mat-form-field class="w-1/2 mb-1" appearance="outline">
-            <mat-label>Nome da pauta</mat-label>
+            <mat-label>Duração da sessão</mat-label>
             <input
+              type="number"
               matInput
-              placeholder="Nome da pauta"
-              formControlName="title"
+              placeholder="1"
+              formControlName="duration"
             />
-            @if (form.get('title')?.invalid && form.get('title')?.touched) {
+            @if ( form.get('duration')?.invalid &&
+            form.get('duration')?.touched) {
             <mat-error>
-              {{ getErrorMessage("title") }}
+              {{ getErrorMessage("duration") }}
             </mat-error>
             }
           </mat-form-field>
@@ -27,7 +39,7 @@
           <mat-form-field appearance="outline" class="w-1/2 mb-1">
             <mat-label>Categoria</mat-label>
             <mat-select [compareWith]="compareFn" formControlName="category">
-              <mat-option>None</mat-option>
+              <mat-option> </mat-option>
               @for (category of categories; track category.id) {
               <mat-option [value]="category">{{ category.title }}</mat-option>
               }
@@ -40,17 +52,6 @@
             }
           </mat-form-field>
         </div>
-
-        <mat-form-field appearance="outline">
-          <mat-label>Duração da sessão</mat-label>
-          <input matInput placeholder="1" formControlName="duration" />
-          @if ( form.get('duration')?.invalid && form.get('duration')?.touched)
-          {
-          <mat-error>
-            {{ getErrorMessage("duration") }}
-          </mat-error>
-          }
-        </mat-form-field>
       </section>
     </section>
   </mat-dialog-content>

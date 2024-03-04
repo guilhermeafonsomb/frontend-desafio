@@ -4,7 +4,7 @@
     <mat-form-field appearance="outline" class="pt-3 w-full md:max-w-[212px]">
       <mat-label>Filtrar por categoria</mat-label>
       <mat-select (selectionChange)="filterCategory($event.value)">
-        <mat-option>None</mat-option>
+        <mat-option> </mat-option>
         @for (category of dataSourceCategories; track category.id) {
         <mat-option [value]="category">{{ category.title }}</mat-option>
         }
