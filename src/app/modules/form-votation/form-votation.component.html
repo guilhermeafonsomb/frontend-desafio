@@ -7,7 +7,9 @@
         Antes de votar selecione um usuário no gerencimaento de usuários.
       </p>
       }
-      <h2 class="mb-4 font-bold text-lg">{{ data.title }}.</h2>
+      <h2 data-test="title" class="mb-4 font-bold text-lg">
+        {{ data.title }}.
+      </h2>
 
       <section class="flex flex-col gap-1">
         <P>Você deseja aprovar essa pauta?</P>
@@ -34,12 +36,16 @@
         <section>
           <p>
             Votos a favor
-            <span class="font-bold text-green-500">{{ data.yesVotes }}</span
+            <span data-test="yesVotes" class="font-bold text-green-500">{{
+              data.yesVotes
+            }}</span
             >.
           </p>
           <p>
             Votos contra
-            <span class="font-bold text-red-500">{{ data.noVotes }}</span
+            <span data-test="noVotes" class="font-bold text-red-500">{{
+              data.noVotes
+            }}</span
             >.
           </p>
         </section>

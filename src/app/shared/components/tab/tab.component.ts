@@ -18,8 +18,6 @@ export class TabComponent {
 
   @Output() tabChanged = new EventEmitter<number>();
 
-  selectedTabIndex = 0;
-
   onTabSelect(event: any): void {
     this.tabChanged.emit(event.index);
   }

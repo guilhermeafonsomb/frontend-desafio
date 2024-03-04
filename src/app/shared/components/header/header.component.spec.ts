@@ -1,4 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
+import { of } from 'rxjs';
+import { mockUsersReponse } from '../../../core/services/users/users.mock';
+import { UsersService } from '../../../core/services/users/users.service';
 import { HeaderComponent } from './header.component';
 
 describe('HeaderComponent', () => {
@@ -7,7 +13,15 @@ describe('HeaderComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HeaderComponent],
+      imports: [HeaderComponent, MatButtonModule, MatMenuModule, MatIconModule],
+      providers: [
+        {
+          provide: UsersService,
+          useValue: {
+            getAllUsers: () => of(mockUsersReponse),
+          },
+        },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(HeaderComponent);
@@ -17,5 +31,9 @@ describe('HeaderComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('users$ should be defined', () => {
+    expect(component.users$).toBeDefined();
   });
 });

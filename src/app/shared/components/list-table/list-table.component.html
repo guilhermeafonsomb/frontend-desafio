@@ -89,6 +89,7 @@
         } @if (element.open) {
         <div class="flex items-center">
           <mat-progress-bar
+            data-test="progresse-bar"
             class="max-w-28 min-w-10 w-full"
             mode="determinate"
             [value]="element.duration"
@@ -120,6 +121,7 @@
     [length]="dataSource.length"
     aria-label="Select page of periodic elements"
     class="bg-transparent border border-zinc-400 py-2"
+    data-test="paginator"
   >
   </mat-paginator>
   } @if (dataSource.length === 0) {

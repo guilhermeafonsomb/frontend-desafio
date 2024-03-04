@@ -11,3 +11,14 @@ export const mockCategoriesResponse: Category = {
   title: 'title category',
   id: 'idCategory',
 };
+
+export const mockCategories: Category[] = [
+  {
+    title: 'title category',
+    id: 'idCategory',
+  },
+  {
+    title: 'title category',
+    id: 'idCategory',
+  },
+];
