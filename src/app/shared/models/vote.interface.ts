@@ -1,5 +1,5 @@
 export interface AddVoteDTO {
-  agendaId: number;
-  userId: number;
+  agendaId: string;
+  userId: string;
   vote: 'SIM' | 'NAO';
 }

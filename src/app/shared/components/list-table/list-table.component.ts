@@ -12,11 +12,15 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
 import { AgendasService } from '../../../core/services/agendas/agendas.service';
+import { CategoriesService } from '../../../core/services/categories/categories.service';
+import { FormCategoriesComponent } from '../../../modules/form-categories/form-categories.component';
 import { FormSessionComponent } from '../../../modules/form-session/form-session.component';
 import { FormVotationComponent } from '../../../modules/form-votation/form-votation.component';
 import { Agenda } from '../../models/agendas.interface';
+import { Category } from '../../models/categories.interface';
 import { ActionDialogComponent } from '../action-dialog/action-dialog.component';
 import { ActionDialogData } from '../action-dialog/action-dialog.type';
 
@@ -31,6 +35,7 @@ import { ActionDialogData } from '../action-dialog/action-dialog.type';
     MatMenuModule,
     MatIconModule,
     ActionDialogComponent,
+    MatSelectModule,
     MatIconModule,
     MatProgressBarModule,
   ],
@@ -38,20 +43,33 @@ import { ActionDialogData } from '../action-dialog/action-dialog.type';
 })
 export class ListTableComponent {
   displayedColumns: string[] = ['position', 'title', 'action'];
-  test = 100;
-  passedTime = 0;
-  initialDuration = 0;
+  dataSource: Agenda[] | Category[] = [];
+  dataSourceAgendas: Agenda[] = [];
+  dataSourceCategories: Category[] = [];
+
+  @Input() isFirstTab = false;
+  @Input() tabSelected = 0;
 
   constructor(
     public dialog: MatDialog,
-    private agendasService: AgendasService
+    private agendasService: AgendasService,
+    private categoriesService: CategoriesService
   ) {}
 
   private _agendas: Agenda[] = [];
+  private _categories: Category[] = [];
+
+  @Input() set categories(categories: Category[] | null) {
+    if (categories) {
+      this.dataSourceCategories = categories;
+      this.dataSource = this.dataSourceCategories;
+    }
+  }
 
   @Input() set agendas(agendas: Agenda[] | null) {
     if (agendas) {
-      this.dataSource = agendas;
+      this.dataSourceAgendas = agendas;
+      this.dataSource = this.dataSourceAgendas;
       this.handleProgressBar();
     }
   }
@@ -59,24 +77,53 @@ export class ListTableComponent {
   get agendas() {
     return this._agendas;
   }
-  dataSource: Agenda[] = [];
-
-  @Input() isFirstTab = false;
+  get categories() {
+    return this._categories;
+  }
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @Output() deleteClickEmitter = new EventEmitter<number>();
-  @Output() startSessionClickEmitter = new EventEmitter<number>();
+  @Output() deleteClickEmitter = new EventEmitter<string>();
+  @Output() startSessionClickEmitter = new EventEmitter<string>();
 
-  @Output() updateClickEmitter = new EventEmitter<number>();
+  @Output() updateClickEmitter = new EventEmitter<string>();
 
-  toggleModalAction(id: number, modalType: string = 'delete') {
-    if (modalType === 'delete') {
+  filterCategory(categorySelected: Category) {
+    this.agendasService
+      .getAgendaByCategory(categorySelected.id)
+      .subscribe((category) => {
+        this.dataSource = category;
+      });
+  }
+
+  toggleModalAction(id: string, modalType: number = 0) {
+    if (modalType === 0) {
       const dialogRef = this.dialog.open<
         ActionDialogComponent,
         ActionDialogData
       >(ActionDialogComponent, {
         data: {
           title: 'Deseja deletar a pauta?',
+          content: 'Uma vez removida, essa ação não pode ser desfeita.',
+          confirmText: 'Remover',
+          cancelText: 'Cancelar',
+        },
+      });
+
+      dialogRef.afterClosed().subscribe((res) => {
+        if (!res) return;
+        this.deleteClickEmitter.emit(id);
+      });
+
+      return;
+    }
+
+    if (modalType === 3) {
+      const dialogRef = this.dialog.open<
+        ActionDialogComponent,
+        ActionDialogData
+      >(ActionDialogComponent, {
+        data: {
+          title: 'Deseja deletar a categoria?',
           content: 'Uma vez removida, essa ação não pode ser desfeita.',
           confirmText: 'Remover',
           cancelText: 'Cancelar',
@@ -112,7 +159,7 @@ export class ListTableComponent {
   }
 
   handleProgressBar() {
-    this.dataSource.forEach((agenda) => {
+    this.dataSourceAgendas.forEach((agenda) => {
       if (agenda.open) {
         const passedTime =
           new Date().getTime() - new Date(agenda.startTime).getTime();
@@ -127,7 +174,7 @@ export class ListTableComponent {
           if (agenda.duration > 0) {
             agenda.duration -= percentage;
           } else {
-            this.dataSource = this.dataSource.filter(
+            this.dataSourceAgendas = this.dataSourceAgendas.filter(
               (item) => item.id !== agenda.id
             );
             clearInterval(interval);
@@ -137,39 +184,51 @@ export class ListTableComponent {
     });
   }
 
-  openUpdateModal(id: number) {
-    const title = 'Editar sessão';
-    this.agendasService.getAgendaById(id).subscribe((data) => {
-      if (data.open === null) {
-        this.dialog.open(FormSessionComponent, {
+  openUpdateModal(id: string, modalType: number = 0) {
+    const title = modalType === 0 ? 'Editar sessão' : 'Editar categoria';
+
+    if (modalType === 0) {
+      this.agendasService.getAgendaById(id).subscribe((data) => {
+        if (data.open === null) {
+          this.dialog.open(FormSessionComponent, {
+            width: '600px',
+            data: { title, data },
+          });
+          return;
+        }
+
+        if (data.open) {
+          this.dialog.open(FormVotationComponent, {
+            width: '600px',
+            data: data,
+          });
+          return;
+        }
+
+        if (data.open === false) {
+          this.dialog.open(ActionDialogComponent, {
+            data: {
+              title: 'Detalhes da pauta',
+              content: `A pauta teve ${data.yesVotes} votos a favor e ${
+                data.noVotes
+              } votos contra. E ela foi ${
+                data.approved ? 'aprovada' : 'reprovada'
+              }.`,
+              confirmText: 'Fechar',
+            },
+          });
+          return;
+        }
+      });
+    }
+
+    if (modalType === 3) {
+      this.categoriesService.getCategoryById(id).subscribe((data) => {
+        this.dialog.open(FormCategoriesComponent, {
           width: '600px',
           data: { title, data },
         });
-        return;
-      }
-
-      if (data.open) {
-        this.dialog.open(FormVotationComponent, {
-          width: '600px',
-          data: data,
-        });
-        return;
-      }
-
-      if (data.open === false) {
-        this.dialog.open(ActionDialogComponent, {
-          data: {
-            title: 'Detalhes da pauta',
-            content: `A pauta teve ${data.yesVotes} votos a favor e ${
-              data.noVotes
-            } votos contra. E ela foi ${
-              data.approved ? 'aprovada' : 'reprovada'
-            }.`,
-            confirmText: 'Fechar',
-          },
-        });
-        return;
-      }
-    });
+      });
+    }
   }
 }

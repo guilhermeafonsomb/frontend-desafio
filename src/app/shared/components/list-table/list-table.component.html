@@ -1,5 +1,17 @@
 <section class="p-4">
-  @if (dataSource?.length !== 0) {
+  @if (tabSelected !== 3) {
+  <div class="flex justify-end">
+    <mat-form-field appearance="outline" class="pt-3 w-full md:max-w-[212px]">
+      <mat-label>Filtrar por categoria</mat-label>
+      <mat-select (selectionChange)="filterCategory($event.value)">
+        <mat-option>None</mat-option>
+        @for (category of dataSourceCategories; track category.id) {
+        <mat-option [value]="category">{{ category.title }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+  </div>
+  }
   <table class="bg-transparent" mat-table [dataSource]="dataSource">
     <ng-container matColumnDef="position">
       <th class="border-zinc-400" mat-header-cell *matHeaderCellDef>No.</th>
@@ -15,7 +27,7 @@
     <ng-container matColumnDef="title">
       <th class="border-zinc-400" mat-header-cell *matHeaderCellDef>Titulo</th>
       <td
-        (click)="openUpdateModal(element.id)"
+        (click)="openUpdateModal(element.id, tabSelected)"
         class="border-zinc-400 max-w-24"
         mat-cell
         *matCellDef="let element"
@@ -26,6 +38,9 @@
 
     <ng-container matColumnDef="action">
       <th class="border-zinc-400" mat-header-cell *matHeaderCellDef></th>
+
+      @if (dataSource.length !== 0) {
+
       <td
         class="border-zinc-400 border-e w-40 pr-0"
         mat-cell
@@ -37,15 +52,17 @@
             <mat-icon>more_vert</mat-icon>
           </button>
           <mat-menu #menu="matMenu">
+            @if (tabSelected !== 3) {
             <button
-              (click)="toggleModalAction(element.id, 'start')"
+              (click)="toggleModalAction(element.id, tabSelected)"
               class="text-primary"
               mat-menu-item
             >
               Iniciar sessão
             </button>
+            }
             <button
-              (click)="toggleModalAction(element.id)"
+              (click)="toggleModalAction(element.id, tabSelected)"
               class="text-secondary"
               mat-menu-item
             >
@@ -73,6 +90,7 @@
 
         }
       </td>
+      }
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
@@ -83,21 +101,23 @@
     ></tr>
   </table>
 
+  @if (dataSource.length !== 0) {
+
   <mat-paginator
     [pageSizeOptions]="[10, 15, 20]"
     showFirstLastButtons
-    [length]="dataSource?.length"
+    [length]="dataSource.length"
     aria-label="Select page of periodic elements"
     class="bg-transparent border border-zinc-400 py-2"
   >
   </mat-paginator>
-  } @else {
+  } @if (dataSource.length === 0) {
   <section class="flex flex-col items-center gap-2 py-4">
     <mat-icon inline="true" class="text-9xl opacity-50"
       >content_paste_off</mat-icon
     >
     <h1 class="font-bold text-secondary text-4xl w-full text-center">
-      Não possui pautas.
+      Não possui {{ tabSelected === 3 ? "categorias" : "pautas" }}.
     </h1>
   </section>
   }

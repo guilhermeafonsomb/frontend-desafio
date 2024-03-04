@@ -18,15 +18,15 @@ export class UsersService {
     return this.http.get<IUser[]>(this.url);
   }
 
-  getUserById(id: number) {
+  getUserById(id: string) {
     return this.http.get<IUser>(`${this.url}/${id}`);
   }
 
-  updateUser(id: number, user: IUserDTO) {
+  updateUser(id: string, user: IUserDTO) {
     return this.http.put(`${this.url}/${id}`, user);
   }
 
-  deleteUser(id: number) {
+  deleteUser(id: string) {
     return this.http.delete(`${this.url}/${id}`);
   }
 }

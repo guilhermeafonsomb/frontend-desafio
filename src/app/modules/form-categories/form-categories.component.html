@@ -1,0 +1,35 @@
+<h2 mat-dialog-title>{{ data.title }}</h2>
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <mat-dialog-content>
+    <section class="flex flex-col px-6">
+      <section class="flex flex-col gap-1">
+        <mat-form-field class="w-full mb-1" appearance="outline">
+          <mat-label>Nome da categoria</mat-label>
+          <input
+            matInput
+            placeholder="Nome da categoria"
+            formControlName="title"
+          />
+          @if (form.get('title')?.invalid && form.get('title')?.touched) {
+          <mat-error>
+            {{ getErrorMessage("title") }}
+          </mat-error>
+          }
+        </mat-form-field>
+      </section>
+    </section>
+  </mat-dialog-content>
+  <mat-dialog-actions class="flex justify-end gap-2">
+    <button class="py-2 px-8" mat-button mat-dialog-close>Cancelar</button>
+    <button
+      class="bg-primary text-white rounded-md font-bold py-2 px-8 disabled:opacity-50 hover:brightness-95 transition-all duration-300 ease-in-out"
+      mat-button
+      mat-dialog-close
+      cdkFocusInitial
+      type="submit"
+      [disabled]="!form.valid"
+    >
+      Salvar
+    </button>
+  </mat-dialog-actions>
+</form>

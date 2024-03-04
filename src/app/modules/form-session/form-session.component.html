@@ -2,17 +2,44 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
   <mat-dialog-content>
     <section class="flex flex-col px-6">
+      @if(categories.length === 0) {
+      <p class="text-red-400">
+        Antes de cadastrar uma pauta cadastre uma categoria.
+      </p>
+      }
       <mat-hint class="mb-4">Uma pauta dura no máximo 3 minutos.</mat-hint>
       <section class="flex flex-col gap-1">
-        <mat-form-field class="w-full mb-1" appearance="outline">
-          <mat-label>Nome da pauta</mat-label>
-          <input matInput placeholder="Nome da pauta" formControlName="title" />
-          @if (form.get('title')?.invalid && form.get('title')?.touched) {
-          <mat-error>
-            {{ getErrorMessage("title") }}
-          </mat-error>
-          }
-        </mat-form-field>
+        <div class="flex gap-4">
+          <mat-form-field class="w-1/2 mb-1" appearance="outline">
+            <mat-label>Nome da pauta</mat-label>
+            <input
+              matInput
+              placeholder="Nome da pauta"
+              formControlName="title"
+            />
+            @if (form.get('title')?.invalid && form.get('title')?.touched) {
+            <mat-error>
+              {{ getErrorMessage("title") }}
+            </mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="w-1/2 mb-1">
+            <mat-label>Categoria</mat-label>
+            <mat-select [compareWith]="compareFn" formControlName="category">
+              <mat-option>None</mat-option>
+              @for (category of categories; track category.id) {
+              <mat-option [value]="category">{{ category.title }}</mat-option>
+              }
+            </mat-select>
+            @if (form.get('category')?.invalid && form.get('category')?.touched)
+            {
+            <mat-error>
+              {{ getErrorMessage("category") }}
+            </mat-error>
+            }
+          </mat-form-field>
+        </div>
 
         <mat-form-field appearance="outline">
           <mat-label>Duração da sessão</mat-label>

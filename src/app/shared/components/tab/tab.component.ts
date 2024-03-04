@@ -14,6 +14,7 @@ export class TabComponent {
   @Input() titleTabOne: string = '';
   @Input() titleTabTwo: string = '';
   @Input() titleTabThree: string = '';
+  @Input() titleTabFour: string = '';
 
   @Output() tabChanged = new EventEmitter<number>();
 

@@ -2,12 +2,15 @@
   titleTabOne="Pautas em aberto"
   titleTabTwo="Pautas em andamento"
   titleTabThree="Pautas fechadas"
+  titleTabFour="Categorias"
   class="w-full max-w-5xl min-w-[300px] rounded-2xl shadow-2xl shadow-slate-500"
   (tabChanged)="onTabChanged($event)"
 >
   <section componentTabOne>
     <app-list-table
-      [agendas]="displayAgendaFalse | async"
+      [categories]="displayCategories$ | async"
+      [tabSelected]="tabSelected"
+      [agendas]="displayAgendaFalse$ | async"
       [isFirstTab]="true"
       class="max-w-[315px]"
       (deleteClickEmitter)="onDeleteClick($event)"
@@ -16,14 +19,27 @@
   </section>
   <section componentTabTwo>
     <app-list-table
-      [agendas]="displayAgendaTrue | async"
+      [categories]="displayCategories$ | async"
+      [tabSelected]="tabSelected"
+      [agendas]="displayAgendaTrue$ | async"
       class="max-w-[315px]"
     ></app-list-table>
   </section>
   <section componentTabThree>
     <app-list-table
-      [agendas]="displayAgendaClose | async"
+      [categories]="displayCategories$ | async"
+      [tabSelected]="tabSelected"
+      [agendas]="displayAgendaClose$ | async"
       class="max-w-[315px]"
+    ></app-list-table>
+  </section>
+  <section componentTabFour>
+    <app-list-table
+      [categories]="displayCategories$ | async"
+      [tabSelected]="tabSelected"
+      [isFirstTab]="true"
+      class="max-w-[315px]"
+      (deleteClickEmitter)="onDeleteClick($event)"
     ></app-list-table>
   </section>
 </app-tab>

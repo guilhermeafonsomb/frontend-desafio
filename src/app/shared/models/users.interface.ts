@@ -3,7 +3,7 @@ export interface IUserDTO {
 }
 
 export interface IUser {
-  id: number;
+  id: string;
   name: string;
   createdAt: string;
   updatedAt: string;

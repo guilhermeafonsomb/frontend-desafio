@@ -28,6 +28,10 @@ export class ErrorInterceptor implements HttpInterceptor {
             `Server side error: code ${error.status}, ` +
               `message: ${error.message}`
           );
+
+          if (error.error.message) {
+            errorMessage = error.error.message;
+          }
         }
         this.notificationService.showError(errorMessage, 'Erro');
         return throwError(() => new Error(errorMessage));

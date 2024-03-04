@@ -4,7 +4,7 @@ import { tap } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { AddVoteDTO } from '../../../shared/models/vote.interface';
 import { NotificationService } from '../../../shared/services/notification.service';
-import { SessionUpdateService } from '../../notifications/sessionUpdate/session-update.service';
+import { SessionUpdateService } from '../../notifications/session-update.service';
 
 @Injectable({
   providedIn: 'root',
@@ -18,7 +18,7 @@ export class VoteService {
     private sessionUpdateService: SessionUpdateService
   ) {}
 
-  openVotingSession(agendaId: number) {
+  openVotingSession(agendaId: string) {
     return this.http.patch(`${this.url}/open/${agendaId}`, {}).pipe(
       tap(() => {
         this.notificationService.showSuccess('Votação iniciada com sucesso.'),
@@ -27,7 +27,7 @@ export class VoteService {
     );
   }
 
-  closeVotingSession(agendaId: number) {
+  closeVotingSession(agendaId: string) {
     return this.http.patch(`${this.url}/close/${agendaId}`, {}).pipe(
       tap(() => {
         this.sessionUpdateService.notifyUpdate('patch');
