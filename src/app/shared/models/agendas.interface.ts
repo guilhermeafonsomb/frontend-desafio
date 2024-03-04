@@ -13,7 +13,7 @@ export interface Agenda {
   approved: boolean;
   active: boolean;
   category: Category;
-  open: boolean;
+  open: boolean | null;
   yesVotes: number;
   noVotes: number;
   startTime: string;

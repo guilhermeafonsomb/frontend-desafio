@@ -7,8 +7,7 @@ import {
   CategoryDTO,
 } from '../../../shared/models/categories.interface';
 import { NotificationService } from '../../../shared/services/notification.service';
-import { CategoryUpdateService } from '../../notifications/category-update.service';
-import { SessionUpdateService } from '../../notifications/session-update.service';
+import { DataUpdateService } from '../../notifications/data-update.service';
 
 @Injectable({
   providedIn: 'root',
@@ -19,15 +18,14 @@ export class CategoriesService {
   constructor(
     private http: HttpClient,
     private notificationService: NotificationService,
-    private sessionUpdateService: SessionUpdateService,
-    private categoryUpdateService: CategoryUpdateService
+    private dataUpdateService: DataUpdateService
   ) {}
 
   createCategory(payload: CategoryDTO): Observable<Category> {
     return this.http.post<Category>(this.url, payload).pipe(
       tap(() => {
         this.notificationService.showSuccess('Categoria criada com sucesso.'),
-          this.sessionUpdateService.notifyUpdate('create');
+          this.dataUpdateService.notifyData('create');
       })
     );
   }
@@ -46,7 +44,7 @@ export class CategoriesService {
         this.notificationService.showSuccess(
           'Categoria atualizada com sucesso.'
         ),
-          this.sessionUpdateService.notifyUpdate('update');
+          this.dataUpdateService.notifyData('update');
       })
     );
   }
@@ -55,7 +53,7 @@ export class CategoriesService {
     return this.http.delete(`${this.url}/${id}`).pipe(
       tap(() => {
         this.notificationService.showSuccess('Categoria removida com sucesso.');
-        this.sessionUpdateService.notifyUpdate('delete');
+        this.dataUpdateService.notifyData('delete');
       })
     );
   }

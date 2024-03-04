@@ -4,7 +4,7 @@ import { tap } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { AddVoteDTO } from '../../../shared/models/vote.interface';
 import { NotificationService } from '../../../shared/services/notification.service';
-import { SessionUpdateService } from '../../notifications/session-update.service';
+import { DataUpdateService } from '../../notifications/data-update.service';
 
 @Injectable({
   providedIn: 'root',
@@ -15,14 +15,14 @@ export class VoteService {
   constructor(
     private http: HttpClient,
     private notificationService: NotificationService,
-    private sessionUpdateService: SessionUpdateService
+    private dataUpdateService: DataUpdateService
   ) {}
 
   openVotingSession(agendaId: string) {
     return this.http.patch(`${this.url}/open/${agendaId}`, {}).pipe(
       tap(() => {
         this.notificationService.showSuccess('Votação iniciada com sucesso.'),
-          this.sessionUpdateService.notifyUpdate('patch');
+          this.dataUpdateService.notifyData('patch');
       })
     );
   }
@@ -30,7 +30,7 @@ export class VoteService {
   closeVotingSession(agendaId: string) {
     return this.http.patch(`${this.url}/close/${agendaId}`, {}).pipe(
       tap(() => {
-        this.sessionUpdateService.notifyUpdate('patch');
+        this.dataUpdateService.notifyData('patch');
       })
     );
   }
@@ -39,7 +39,7 @@ export class VoteService {
     return this.http.post(`${this.url}`, payload).pipe(
       tap(() => {
         this.notificationService.showSuccess('Voto realizado com sucesso.');
-        this.sessionUpdateService.notifyUpdate('create');
+        this.dataUpdateService.notifyData('create');
       })
     );
   }

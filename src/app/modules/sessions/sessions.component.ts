@@ -1,7 +1,7 @@
 import { AsyncPipe } from '@angular/common';
 import { Component } from '@angular/core';
 import { Observable, of, take } from 'rxjs';
-import { SessionUpdateService } from '../../core/notifications/session-update.service';
+import { DataUpdateService } from '../../core/notifications/data-update.service';
 import { AgendasService } from '../../core/services/agendas/agendas.service';
 import { CategoriesService } from '../../core/services/categories/categories.service';
 import { VoteService } from '../../core/services/vote/vote.service';
@@ -24,7 +24,7 @@ export class SessionsComponent {
 
   constructor(
     private agendasService: AgendasService,
-    private sessionUpdateService: SessionUpdateService,
+    private dataUpdateService: DataUpdateService,
     private voteService: VoteService,
     private categoryService: CategoriesService
   ) {
@@ -32,7 +32,7 @@ export class SessionsComponent {
 
     this.onTabChanged(0);
 
-    this.sessionUpdateService.updates$.subscribe((updateType) => {
+    this.dataUpdateService.datas$.subscribe((updateType) => {
       if (updateType) {
         this.handleTabChangeInfo();
       }
