@@ -1,8 +1,8 @@
 <h1 mat-dialog-title>{{ data.title }}</h1>
+@if (data.content) {
 
-<div mat-dialog-content *ngIf="data.content" class="mb-4">
-  <p>{{ data.content }}</p>
-</div>
+<div mat-dialog-content [innerHTML]="data.content" class="mb-4"></div>
+}
 <div mat-dialog-actions class="flex justify-center basis-0 gap-4 flex-1">
   @if (data.cancelText) {
 

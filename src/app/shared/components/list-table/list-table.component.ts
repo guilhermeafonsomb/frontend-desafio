@@ -42,7 +42,7 @@ import { ActionDialogData } from '../action-dialog/action-dialog.type';
   templateUrl: './list-table.component.html',
 })
 export class ListTableComponent {
-  displayedColumns: string[] = ['position', 'title', 'action'];
+  displayedColumns: string[] = ['position', 'title', 'category', 'action'];
   dataSource: Agenda[] | Category[] = [];
   dataSourceAgendas: Agenda[] = [];
   dataSourceCategories: Category[] = [];
@@ -95,7 +95,26 @@ export class ListTableComponent {
       });
   }
 
-  toggleModalAction(id: string, modalType: number = 0) {
+  toggleModalStartSession(id: string) {
+    const dialogRef = this.dialog.open<ActionDialogComponent, ActionDialogData>(
+      ActionDialogComponent,
+      {
+        data: {
+          title: 'Deseja iniciar a pauta?',
+          content: 'Uma vez iniciada, essa ação não pode ser desfeita.',
+          confirmText: 'Iniciar',
+          cancelText: 'Cancelar',
+        },
+      }
+    );
+
+    dialogRef.afterClosed().subscribe((res) => {
+      if (!res) return;
+      this.startSessionClickEmitter.emit(id);
+    });
+  }
+
+  toggleModalDelete(id: string, modalType: number = 0) {
     if (modalType === 0) {
       const dialogRef = this.dialog.open<
         ActionDialogComponent,
@@ -115,9 +134,7 @@ export class ListTableComponent {
       });
 
       return;
-    }
-
-    if (modalType === 3) {
+    } else if (modalType === 3) {
       const dialogRef = this.dialog.open<
         ActionDialogComponent,
         ActionDialogData
@@ -137,25 +154,6 @@ export class ListTableComponent {
 
       return;
     }
-
-    const dialogRef = this.dialog.open<ActionDialogComponent, ActionDialogData>(
-      ActionDialogComponent,
-      {
-        data: {
-          title: 'Deseja iniciar a pauta?',
-          content: 'Uma vez iniciada, essa ação não pode ser desfeita.',
-          confirmText: 'Iniciar',
-          cancelText: 'Cancelar',
-        },
-      }
-    );
-
-    dialogRef.afterClosed().subscribe((res) => {
-      if (!res) return;
-      this.startSessionClickEmitter.emit(id);
-    });
-
-    return;
   }
 
   handleProgressBar() {
@@ -185,10 +183,11 @@ export class ListTableComponent {
   }
 
   openUpdateModal(id: string, modalType: number = 0) {
+    console.log('modalType', modalType);
     const title = modalType === 0 ? 'Editar sessão' : 'Editar categoria';
 
-    if (modalType === 0) {
-      this.agendasService.getAgendaById(id).subscribe((data) => {
+    this.agendasService.getAgendaById(id).subscribe((data) => {
+      if (modalType === 0) {
         if (data.open === null) {
           this.dialog.open(FormSessionComponent, {
             width: '600px',
@@ -196,31 +195,30 @@ export class ListTableComponent {
           });
           return;
         }
-
-        if (data.open) {
-          this.dialog.open(FormVotationComponent, {
-            width: '600px',
-            data: data,
-          });
-          return;
-        }
-
-        if (data.open === false) {
-          this.dialog.open(ActionDialogComponent, {
-            data: {
-              title: 'Detalhes da pauta',
-              content: `A pauta teve ${data.yesVotes} votos a favor e ${
-                data.noVotes
-              } votos contra. E ela foi ${
-                data.approved ? 'aprovada' : 'reprovada'
-              }.`,
-              confirmText: 'Fechar',
-            },
-          });
-          return;
-        }
-      });
-    }
+      } else if (modalType === 1) {
+        this.dialog.open(FormVotationComponent, {
+          width: '600px',
+          data: data,
+        });
+        return;
+      } else if (modalType === 2) {
+        this.dialog.open(ActionDialogComponent, {
+          data: {
+            title: 'Detalhes da pauta',
+            content: `<p>Teve um total de ${
+              data.yesVotes + data.noVotes
+            } voto(s).</p> 
+            A pauta teve ${data.yesVotes} voto(s) a favor e ${
+              data.noVotes
+            } voto(s) contra. E ela foi <b>${
+              data.approved ? 'aprovada' : 'reprovada'
+            }</b>.`,
+            confirmText: 'Fechar',
+          },
+        });
+        return;
+      }
+    });
 
     if (modalType === 3) {
       this.categoriesService.getCategoryById(id).subscribe((data) => {

@@ -36,8 +36,24 @@
       </td>
     </ng-container>
 
+    <ng-container matColumnDef="category">
+      <th class="border-zinc-400" mat-header-cell *matHeaderCellDef>
+        Categoria
+      </th>
+      <td
+        (click)="openUpdateModal(element.id, tabSelected)"
+        class="border-zinc-400 max-w-24"
+        mat-cell
+        *matCellDef="let element"
+      >
+        <p class="truncate">{{ element.category?.title }}</p>
+      </td>
+    </ng-container>
+
     <ng-container matColumnDef="action">
-      <th class="border-zinc-400" mat-header-cell *matHeaderCellDef></th>
+      <th class="border-zinc-400" mat-header-cell *matHeaderCellDef>
+        @if (tabSelected === 2) { Status }
+      </th>
 
       @if (dataSource.length !== 0) {
 
@@ -54,7 +70,7 @@
           <mat-menu #menu="matMenu">
             @if (tabSelected !== 3) {
             <button
-              (click)="toggleModalAction(element.id, tabSelected)"
+              (click)="toggleModalStartSession(element.id)"
               class="text-primary"
               mat-menu-item
             >
@@ -62,7 +78,7 @@
             </button>
             }
             <button
-              (click)="toggleModalAction(element.id, tabSelected)"
+              (click)="toggleModalDelete(element.id, tabSelected)"
               class="text-secondary"
               mat-menu-item
             >
@@ -79,16 +95,11 @@
           ></mat-progress-bar>
         </div>
 
-        } @if (element.open === false) {
-        <div class="flex items-center">
-          @if (element.approved) {
-          <p class="text-green-500">Aprovada</p>
-          } @else {
-          <p class="text-red-500">Reprovada</p>
-          }
-        </div>
-
-        }
+        } @if (tabSelected === 2) { @if (element.approved) {
+        <p class="text-green-500">Aprovada</p>
+        } @else {
+        <p class="text-red-500">Reprovada</p>
+        } }
       </td>
       }
     </ng-container>
